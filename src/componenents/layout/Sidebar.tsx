@@ -1,39 +1,50 @@
-import { LogOut, Home } from "lucide-react";
+import { BarChart3, Home, LogOut } from "lucide-react";
 import { NavLink } from "react-router-dom";
-import { useAuth } from "../../store/authStore";
-import ThemeToggle from "../common/ThemeToggle";
+import { useAuth } from "@/store/authStore";
 
 export default function Sidebar() {
   const logout = useAuth(s => s.logout);
+
+  const linkBase =
+    "group flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm transition-colors";
+  const active =
+    "bg-[oklch(var(--sidebar-accent)/20%)] text-[oklch(var(--sidebar-primary))]";
+  const idle =
+    "text-sidebar-foreground/80 hover:bg-[oklch(var(--sidebar-accent)/12%)]";
+
   return (
-    <aside className="w-64 shrink-0 h-full bg-card-light dark:bg-card-dark border-r border-ink-200 dark:border-ink-800 flex flex-col">
-      <div className="p-4 border-b border-ink-200 dark:border-ink-800 flex items-center justify-between">
-        <h1 className="font-semibold">FinBoard</h1>
-        <ThemeToggle />
+    <div className="flex h-full w-full flex-col">
+      {/* Logo */}
+      <div className="px-4 py-4 border-b border-sidebar-border">
+        <div className="flex items-center gap-2">
+          <div className="flex h-9 w-9 items-center justify-center rounded-md bg-[oklch(var(--sidebar-primary)/20%)]">
+            <BarChart3 size={18} className="text-[oklch(var(--sidebar-primary))]" />
+          </div>
+          <span className="font-semibold">FinBoard</span>
+        </div>
       </div>
-      <nav className="p-3 flex-1">
-        <ul className="space-y-2">
-          <li>
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `flex items-center gap-2 px-3 py-2 rounded-xl2 hover:bg-ink-50 dark:hover:bg-ink-900 ${isActive
-                  ? "bg-ink-50 dark:bg-ink-900"
-                  : ""}`}
-            >
-              <Home size={18} /> Home
-            </NavLink>
-          </li>
-        </ul>
+
+      {/* Nav */}
+      <nav className="flex-1 p-3 space-y-1">
+        <NavLink
+          to="/"
+          className={({ isActive }) => `${linkBase} ${isActive ? active : idle}`}
+        >
+          <Home size={16} />
+          <span>Dashboard</span>
+        </NavLink>
       </nav>
-      <div className="p-3 border-t border-ink-200 dark:border-ink-800">
+
+      {/* Sair */}
+      <div className="p-3 border-t border-sidebar-border">
         <button
           onClick={logout}
-          className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl2 border border-ink-300 dark:border-ink-700 hover:bg-ink-50 dark:hover:bg-ink-900"
+          className="w-full inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-lg border border-[oklch(var(--border))] hover:bg-[oklch(var(--sidebar-accent)/10%)]"
         >
-          <LogOut size={18} /> Logout
+          <LogOut size={16} />
+          <span>Sair</span>
         </button>
       </div>
-    </aside>
+    </div>
   );
 }
